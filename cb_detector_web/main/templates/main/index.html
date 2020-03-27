@@ -26,6 +26,10 @@
                     {{ form|crispy }}
                     <br>
 
+                    {% if bully_probability %}
+                        <p>Estimated toxicity rating: {{ bully_probability }}%</p>
+                    {% endif %}
+
                     <button type="submit" class="btn btn-primary">Submit</button>
 
                 </form>

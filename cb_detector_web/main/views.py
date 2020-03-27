@@ -3,11 +3,6 @@ from .forms import TextForm
 
 from joblib import load
 
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-from sklearn.linear_model import SGDClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
-
 
 def index(request):
     context = {}
@@ -24,7 +19,8 @@ def index(request):
             bool_result = text_clf.predict([body])[0] == 1
             probability_result = text_clf.predict_proba([body])[0]
 
-            print(probability_result)
+            context['bully_prediction'] = bool_result
+            context['bully_probability'] = "{0:.2f}".format(probability_result[1]*100)
 
     context['form'] = TextForm()
     return render(request, 'main/index.html', context)
