@@ -20,19 +20,25 @@
                 <h1>Cyberbullying Detector</h1>
                 <form method="post" novalidate>
                     {% csrf_token %}
-
                     <label>Enter text to measure its toxicity</label>
-                    <br>
                     {{ form|crispy }}
-                    <br>
-
-                    {% if bully_probability %}
-                        <p>Estimated toxicity rating: {{ bully_probability }}%</p>
-                    {% endif %}
-
                     <button type="submit" class="btn btn-primary">Submit</button>
-
                 </form>
+
+                {% if bully_probability != None %}
+                    <div class="{{ toxicity_rate_alert_color }}" role="alert">
+                        Estimated toxicity rating: {{ bully_probability }}%
+                    </div>
+                {% endif %}
+
+                {% if bully_prediction != None %}
+                    {% if bully_prediction == True %}
+                    <div class="{{ bullying_prediction_alert_color }}" role="alert">
+                        <b>C Y B E R B U L L Y I N G D E T E C T E D</b>
+                    </div>
+                    {% endif %}
+                {% endif %}
+
             </div>
         </div>
     </div>
