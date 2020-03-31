@@ -11,6 +11,8 @@ def index(request):
         context['form'] = TextForm()
     elif request.method == 'POST':
         form = TextForm(request.POST)
+        context['form'] = form
+
         if form.is_valid():
             # get the content of entered text
             body = form.cleaned_data['text']
@@ -19,13 +21,17 @@ def index(request):
             text_clf = load('main/model/model_v2.model')
 
             # predict if text is bullying or not (binary)
-            bool_result = text_clf.predict([body])[0] == 1
+            bool_result = text_clf.predict([body])[0] in (1, '1')
 
             # show confidence that the prediction is indeed cyberbullying
             probability_result = text_clf.predict_proba([body])[0][1]*100
 
-            # rounding probability result to 2 decimal places (in percent form
+            # rounding probability result to 2 decimal places (in percent form)
             probability_result = round(100*probability_result) / 100
+
+            # print logs
+            print(f"Bullying Prediction: {bool_result}")
+            print(f"Prediction Confidence: {probability_result}%")
 
             # pick color of alert for toxicity rating (confidence)
             if probability_result < 30:
@@ -43,6 +49,5 @@ def index(request):
             context['bully_prediction'] = bool_result
             context['bully_probability'] = probability_result
             context['bullying_prediction_alert_color'] = bullying_prediction_alert_color
-            context['form'] = form
 
     return render(request, 'main/index.html', context)
