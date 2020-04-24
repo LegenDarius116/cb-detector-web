@@ -18,7 +18,7 @@ def index(request):
             body = form.cleaned_data['text']
 
             # load the machine learning model
-            text_clf = load('main/model/model_v2.model')
+            text_clf = load('main/model/model_v3.model')
 
             # predict if text is bullying or not (binary)
             bool_result = text_clf.predict([body])[0] in (1, '1')
