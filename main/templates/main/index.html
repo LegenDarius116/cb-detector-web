@@ -1,0 +1,54 @@
+<!doctype html>
+{% load crispy_forms_tags %}
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Cyberbullying Detector</title>
+    <meta name="description" content="Cyberbullying Detector Web App">
+    <meta name="author" content="Darius">
+
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous">
+
+    <link rel="stylesheet"
+          href="{% static 'css/index.css' %}">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="jumbotron">
+                    <h1>Cyberbullying Detector</h1>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <label>Enter text to measure its toxicity</label>
+                        <hr>
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+                    {% if bully_probability != None %}
+                        {% if bully_prediction != True %}
+                            <div class="{{ toxicity_rate_alert_color }}" role="alert">
+                                Estimated toxicity rating: {{ bully_probability }}%
+                            </div>
+                        {% else %}
+                            <div class="{{ toxicity_rate_alert_color }}" role="alert">
+                                Estimated toxicity rating: <b>{{ bully_probability }}%</b> (Cyberbullying Detected)
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
